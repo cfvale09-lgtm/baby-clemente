@@ -4,96 +4,539 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🍼 Regalos para Baby Clemente</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/tabler-icons.min.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: Arial, sans-serif; background: #f8f9fa; color: #2c3e50; }
-  .header { text-align: center; padding: 3rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-  .header h1 { font-size: 36px; margin-bottom: 0.5rem; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
-  .controls { display: flex; gap: 12px; margin-bottom: 2rem; }
-  .controls input { flex: 1; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; }
-  .controls button { padding: 12px 24px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 2rem; }
-  .stat-card { background: white; padding: 1.5rem; border-radius: 12px; text-align: center; }
-  .stat-number { font-size: 32px; font-weight: 700; color: #667eea; }
-  .gifts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-  .gift-card { background: white; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; }
-  .gift-name { font-size: 16px; font-weight: 600; margin-bottom: 0.5rem; }
-  .btn-claim { width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 1rem; }
+  html { scroll-behavior: smooth; }
+  body { 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #f8f9fa;
+    color: #2c3e50;
+  }
+  
+  .header { 
+    text-align: center; 
+    padding: 3rem 1.5rem 2rem; 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .header h1 { 
+    font-size: 36px; 
+    font-weight: 700;
+    margin-bottom: 0.5rem; 
+  }
+  .header p { 
+    font-size: 16px; 
+    opacity: 0.95;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  
+  .welcome-message {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    line-height: 1.8;
+    font-size: 15px;
+    color: #555;
+  }
+  
+  .welcome-message p {
+    margin-bottom: 1rem;
+  }
+  
+  .stats { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+    gap: 16px; 
+    margin-bottom: 2rem; 
+  }
+  .stat-card { 
+    background: white;
+    padding: 1.5rem; 
+    border-radius: 12px; 
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-top: 4px solid #667eea;
+  }
+  .stat-label { 
+    font-size: 13px; 
+    color: #7f8c8d;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .stat-number { 
+    font-size: 32px; 
+    font-weight: 700; 
+    color: #667eea;
+  }
+  
+  .gifts-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    gap: 1.5rem; 
+  }
+  
+  .gift-card { 
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px; 
+    overflow: hidden; 
+    display: flex; 
+    flex-direction: column;
+    transition: all 0.3s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    cursor: pointer;
+  }
+  .gift-card:hover { 
+    border-color: #667eea;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+    transform: translateY(-4px);
+  }
+  
+  .gift-image { 
+    width: 100%; 
+    height: 200px; 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 60px;
+    color: white;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .gift-content { 
+    padding: 1.5rem; 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+  }
+  .gift-name { 
+    font-size: 16px; 
+    font-weight: 600; 
+    margin-bottom: 0.5rem; 
+    line-height: 1.5;
+    color: #2c3e50;
+  }
+  .gift-store { 
+    font-size: 13px; 
+    color: #7f8c8d;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .gift-link { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 6px; 
+    color: #667eea; 
+    font-size: 13px; 
+    text-decoration: none; 
+    margin-bottom: 1rem;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+  .gift-link:hover { 
+    color: #764ba2;
+  }
+  
+  .gift-status { 
+    margin-top: auto;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f5f7fb;
+    border-radius: 8px;
+  }
+  .status-text { 
+    font-size: 12px; 
+    color: #95a5a6;
+    margin-bottom: 0.5rem;
+  }
+  .claimed-list { 
+    font-size: 13px; 
+    font-weight: 500; 
+    color: #667eea;
+  }
+  .claimed-item {
+    padding: 4px 8px;
+    background: white;
+    border-radius: 4px;
+    margin: 3px 0;
+  }
+  
+  .gift-actions { 
+    display: flex; 
+    gap: 8px; 
+  }
+  .btn-claim { 
+    flex: 1; 
+    padding: 12px; 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white; 
+    border: none; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-weight: 600; 
+    font-size: 14px; 
+    transition: all 0.3s;
+  }
+  .btn-claim:hover { 
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+  
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal.show {
+    display: flex;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  
+  .modal-header {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+  
+  .form-group input[type="number"] {
+    width: 100px;
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 1.5rem;
+  }
+  
+  .btn-submit {
+    flex: 1;
+    padding: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  .btn-submit:hover {
+    opacity: 0.9;
+  }
+  
+  .btn-cancel {
+    padding: 12px 24px;
+    background: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  .footer { 
+    text-align: center; 
+    margin-top: 3rem; 
+    padding-top: 2rem; 
+    border-top: 1px solid #e0e0e0;
+    font-size: 14px; 
+    color: #7f8c8d;
+  }
+  
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #27ae60;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: slideIn 0.3s ease-out;
+    z-index: 1001;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
 </style>
 </head>
 <body>
+
 <div class="header">
   <h1>🍼 Regalos para Baby Clemente</h1>
-  <p>Baby Brunch - Septiembre 2026</p>
+  <p>Baby Brunch - 27 de junio 2026</p>
 </div>
+
 <div class="container">
-  <div class="controls">
-    <input type="text" id="nameInput" placeholder="Tu nombre">
-    <button onclick="alert('¡Página lista!')">Ver regalos</button>
+  <div class="welcome-message">
+    <p><strong>¡Queridos amigos y familia!</strong></p>
+    <p>Agradecemos de corazón que deseen ser parte de este hermoso proceso de preparación para la llegada de Clemente. Con su presencia y apoyo, nos sentimos infinitamente felices y acompañados en esta etapa tan especial de nuestras vidas.</p>
+    <p>Si desearan regalarnos algo, les sugerimos que elijan de esta lista, ya que contamos con la mayoría de las cosas que necesitamos. Tenemos bastante ropa, así que preferimos enfocarnos en otros artículos esenciales.</p>
+    <p>Respecto a los pañales, hemos decidido que lo ideal sería recibir una Gift Card, ya que aún no conocemos las preferencias o posibles alergias del bebé. Esto nos permitirá elegir la opción que mejor se adapte a sus necesidades cuando llegue el momento.</p>
+    <p><strong>¡Mil gracias por su amor y generosidad!</strong> 💛</p>
   </div>
+
   <div class="stats">
-    <div class="stat-card"><div class="stat-number">13</div><div>Regalos totales</div></div>
-    <div class="stat-card"><div class="stat-number" id="claimed">0</div><div>Comprometidos</div></div>
-    <div class="stat-card"><div class="stat-number" id="available">13</div><div>Disponibles</div></div>
+    <div class="stat-card">
+      <div class="stat-label">Regalos totales</div>
+      <div class="stat-number" id="totalGifts">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Comprometidos</div>
+      <div class="stat-number" id="claimedCount">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Disponibles</div>
+      <div class="stat-number" id="availableCount">0</div>
+    </div>
   </div>
+
   <div class="gifts-grid" id="giftsContainer"></div>
 </div>
+
+<div class="container">
+  <div class="footer">
+    💛 Gracias por ser parte del baby brunch de Clemente 💛
+  </div>
+</div>
+
+<!-- Modal para reservar regalo -->
+<div id="reserveModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header" id="modalTitle">Reservar regalo</div>
+    <form id="reserveForm" onsubmit="submitReservation(event)">
+      <div class="form-group">
+        <label>Tu nombre <span style="color: red;">*</span></label>
+        <input type="text" id="reserverName" required placeholder="Ej: María García">
+      </div>
+      <div class="form-group">
+        <label>Teléfono o email (para coordinar)</label>
+        <input type="text" id="reserverContact" placeholder="Ej: +56 9 1234 5678 o correo@ejemplo.com">
+      </div>
+      <div class="form-group">
+        <label id="quantityLabel">Cantidad</label>
+        <input type="number" id="reserveQuantity" value="1" min="1" max="5">
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Confirmar reserva</button>
+        <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
-const gifts = [
-  { name: "Nido Colecho Reversible Océano", store: "Olivia y Sam", url: "https://www.oliviaysam.com/nido-colecho-reversible-oceano" },
-  { name: "Saco de dormir Guldvaevare", store: "IKEA", url: "https://www.ikea.com/cl/es/p/guldvaevare-saco-de-dormir-beige-ocre-90588543/" },
-  { name: "Saco de dormir Tencel Hojas Verdes", store: "Rosen", url: "https://www.rosen.cl/babyrosen/saco-de-dormir-tencel-hojas-verdes-0-2-meses.html" },
-  { name: "Termómetro Ambiental", store: "Mamás Mateas", url: "https://mamasmateas.com/products/termometro-ambiental" },
-  { name: "Toalla con Capucha (Carter's)", store: "Falabella", url: "https://www.falabella.com/falabella-cl/product/17450181/" },
-  { name: "Toalla de Bebé con Capucha Amarilla", store: "IKEA", url: "https://www.ikea.com/cl/es/p/groenfink-toalla-de-bebe-con-capucha-amarillo-70572369/" },
-  { name: "Mamadera Softouch 150ml", store: "Mamás Mateas", url: "https://mamasmateas.com/products/mamadera-softouch-boca-ancha-pp" },
-  { name: "Mamadera Softouch 240ml", store: "Mamás Mateas", url: "https://mamasmateas.com/products/mamadera-softouch-boca-ancha-pp" },
-  { name: "Mamadera Softouch 320ml", store: "Mamás Mateas", url: "https://mamasmateas.com/products/mamadera-softouch-boca-ancha-pp" },
-  { name: "Cepillo de Limpieza Silicona", store: "Mamás Mateas", url: "https://mamasmateas.com/products/cepillo-de-limpieza-de-silicona-gris" },
-  { name: "Calentador de Mamaderas", store: "Mamás Mateas", url: "https://mamasmateas.com/products/calentador-de-mamaderas" },
-  { name: "Set Lima Uñas Eléctrico", store: "Falabella", url: "https://www.falabella.com/falabella-cl/product/141799642/" },
-  { name: "Cepillo Peineta", store: "Mamás Mateas", url: "https://mamasmateas.com/products/cepillo-peineta" }
+const initialGifts = [
+  { name: "Nido Colecho Reversible Océano", store: "Olivia y Sam", url: "https://www.oliviaysam.com/nido-colecho-reversible-oceano", icon: "🛏️" },
+  { name: "Saco de dormir Guldvaevare (Beige-Ocre)", store: "IKEA", url: "https://www.ikea.com/cl/es/p/guldvaevare-saco-de-dormir-beige-ocre-90588543/", icon: "🛌" },
+  { name: "Saco de dormir Tencel Hojas Verdes (0-2 meses)", store: "Rosen", url: "https://www.rosen.cl/babyrosen/saco-de-dormir-tencel-hojas-verdes-0-2-meses.html", icon: "🛌" },
+  { name: "Termómetro Ambiental", store: "Mamás Mateas", url: "https://mamasmateas.com/products/termometro-ambiental", icon: "🌡️" },
+  { name: "Toalla con Capucha Pack 2 Unidades (Carter's)", store: "Falabella", url: "https://www.falabella.com/falabella-cl/product/17450181/", icon: "🧴" },
+  { name: "Toalla de Bebé con Capucha (Groenfink - Amarillo)", store: "IKEA", url: "https://www.ikea.com/cl/es/p/groenfink-toalla-de-bebe-con-capucha-amarillo-70572369/", icon: "🧴" },
+  { name: "Mamadera Softouch Boca Ancha 150ml", store: "Mamás Mateas", url: "https://mamasmateas.com/products/mamadera-softouch-boca-ancha-pp", icon: "🍼" },
+  { name: "Mamadera Softouch Boca Ancha 240ml", store: "Mamás Mateas", url: "https://mamasmateas.com/products/mamadera-softouch-boca-ancha-pp", icon: "🍼" },
+  { name: "Mamadera Softouch Boca Ancha 320ml", store: "Mamás Mateas", url: "https://mamasmateas.com/products/mamadera-softouch-boca-ancha-pp", icon: "🍼" },
+  { name: "Cepillo de Limpieza de Silicona Gris", store: "Mamás Mateas", url: "https://mamasmateas.com/products/cepillo-de-limpieza-de-silicona-gris", icon: "🧹" },
+  { name: "Calentador de Mamaderas", store: "Mamás Mateas", url: "https://mamasmateas.com/products/calentador-de-mamaderas", icon: "🔥" },
+  { name: "Set de Lima Uñas Eléctrico de Bebé (Momcozy)", store: "Falabella", url: "https://www.falabella.com/falabella-cl/product/141799642/", icon: "✂️" },
+  { name: "Cepillo Peineta", store: "Mamás Mateas", url: "https://mamasmateas.com/products/cepillo-peineta", icon: "💇" },
+  { name: "Gift Card para Pañales", store: "A elegir", url: "#", icon: "🎁" }
 ];
 
-let claimedGifts = JSON.parse(localStorage.getItem('clemGifts')) || {};
+let gifts = JSON.parse(localStorage.getItem('clemGifts')) || initialGifts.map((g, i) => ({
+  ...g,
+  id: i,
+  reservations: []
+}));
+
+let currentGiftId = null;
+
+function saveGifts() {
+  localStorage.setItem('clemGifts', JSON.stringify(gifts));
+}
 
 function renderGifts() {
   const container = document.getElementById('giftsContainer');
   container.innerHTML = '';
-  gifts.forEach((gift, i) => {
-    const isClaimed = claimedGifts[i];
+  
+  gifts.forEach(gift => {
     const card = document.createElement('div');
     card.className = 'gift-card';
+    
+    const hasReservations = gift.reservations && gift.reservations.length > 0;
+    
     card.innerHTML = `
-      <div class="gift-name">${gift.name}</div>
-      <div style="font-size: 13px; color: #7f8c8d; margin-bottom: 1rem;">📍 ${gift.store}</div>
-      <a href="${gift.url}" target="_blank" style="color: #667eea; text-decoration: none;">Ver producto →</a>
-      <div style="font-size: 12px; color: #95a5a6; margin-top: 1rem; margin-bottom: 0.5rem;">${isClaimed ? `Reservado por: <strong>${isClaimed}</strong>` : 'Disponible'}</div>
-      <button class="btn-claim" onclick="claim(${i})">${isClaimed ? 'Liberar' : 'Yo compro esto'}</button>
+      <div class="gift-image">
+        ${gift.icon}
+      </div>
+      <div class="gift-content">
+        <div class="gift-name">${gift.name}</div>
+        <div class="gift-store">
+          <span>📍</span> ${gift.store}
+        </div>
+        <a href="${gift.url}" target="_blank" rel="noopener noreferrer" class="gift-link">
+          Ver producto →
+        </a>
+        <div class="gift-status">
+          ${hasReservations ? `
+            <div class="status-text">Reservado(s):</div>
+            <div class="claimed-list">
+              ${gift.reservations.map((r, i) => `<div class="claimed-item">✓ ${r.quantity > 1 ? r.quantity + 'x - ' : ''}${r.name}</div>`).join('')}
+            </div>
+          ` : `
+            <div class="status-text">Disponible para reservar</div>
+          `}
+        </div>
+        <div class="gift-actions">
+          <button class="btn-claim" onclick="openReserveModal(${gift.id})">Reservar regalo</button>
+        </div>
+      </div>
     `;
     container.appendChild(card);
   });
+  
+  updateStats();
 }
 
-function claim(id) {
-  const name = document.getElementById('nameInput').value.trim();
-  if (!name && !claimedGifts[id]) {
-    alert('Ingresa tu nombre primero');
+function openReserveModal(giftId) {
+  currentGiftId = giftId;
+  const gift = gifts[giftId];
+  document.getElementById('modalTitle').textContent = `Reservar: ${gift.name}`;
+  document.getElementById('reserveForm').reset();
+  document.getElementById('reserverName').focus();
+  document.getElementById('reserveModal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('reserveModal').classList.remove('show');
+  currentGiftId = null;
+}
+
+function submitReservation(event) {
+  event.preventDefault();
+  
+  const name = document.getElementById('reserverName').value.trim();
+  const contact = document.getElementById('reserverContact').value.trim();
+  const quantity = parseInt(document.getElementById('reserveQuantity').value) || 1;
+  
+  if (!name) {
+    alert('Por favor ingresa tu nombre');
     return;
   }
-  if (claimedGifts[id]) {
-    delete claimedGifts[id];
-  } else {
-    claimedGifts[id] = name;
+  
+  if (currentGiftId !== null) {
+    const gift = gifts[currentGiftId];
+    
+    gift.reservations.push({
+      name: name,
+      contact: contact,
+      quantity: quantity,
+      date: new Date().toLocaleDateString()
+    });
+    
+    saveGifts();
+    renderGifts();
+    closeModal();
+    showNotification(`¡Gracias ${name}! Tu reserva fue confirmada`);
   }
-  localStorage.setItem('clemGifts', JSON.stringify(claimedGifts));
-  renderGifts();
-  document.getElementById('claimed').textContent = Object.keys(claimedGifts).length;
-  document.getElementById('available').textContent = gifts.length - Object.keys(claimedGifts).length;
 }
+
+function updateStats() {
+  const total = gifts.length;
+  const claimed = gifts.filter(g => g.reservations && g.reservations.length > 0).length;
+  const available = total - claimed;
+  
+  document.getElementById('totalGifts').textContent = total;
+  document.getElementById('claimedCount').textContent = claimed;
+  document.getElementById('availableCount').textContent = available;
+}
+
+function showNotification(message) {
+  const notif = document.createElement('div');
+  notif.className = 'notification';
+  notif.textContent = message;
+  document.body.appendChild(notif);
+  
+  setTimeout(() => {
+    notif.remove();
+  }, 3000);
+}
+
+// Cerrar modal al hacer click fuera
+document.getElementById('reserveModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeModal();
+  }
+});
 
 renderGifts();
 </script>
+
 </body>
 </html>
