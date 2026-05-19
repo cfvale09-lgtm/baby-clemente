@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🍼 Regalos para Baby Clemente</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/tabler-icons.min.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -94,7 +94,6 @@
     flex-direction: column;
     transition: all 0.3s;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    cursor: pointer;
   }
   .gift-card:hover { 
     border-color: #667eea;
@@ -109,11 +108,15 @@
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    font-size: 60px;
-    color: white;
     overflow: hidden;
     background-size: cover;
     background-position: center;
+  }
+  
+  .gift-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   
   .gift-content { 
@@ -128,6 +131,12 @@
     margin-bottom: 0.5rem; 
     line-height: 1.5;
     color: #2c3e50;
+  }
+  .gift-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 0.5rem;
   }
   .gift-store { 
     font-size: 13px; 
@@ -164,16 +173,14 @@
     color: #95a5a6;
     margin-bottom: 0.5rem;
   }
-  .claimed-list { 
-    font-size: 13px; 
-    font-weight: 500; 
-    color: #667eea;
-  }
-  .claimed-item {
-    padding: 4px 8px;
-    background: white;
-    border-radius: 4px;
-    margin: 3px 0;
+  .status-badge {
+    display: inline-block;
+    background: #27ae60;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
   }
   
   .gift-actions { 
@@ -261,6 +268,13 @@
     width: 100px;
   }
   
+  .info-text {
+    font-size: 12px;
+    color: #95a5a6;
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+  
   .form-actions {
     display: flex;
     gap: 12px;
@@ -324,6 +338,41 @@
       opacity: 1;
     }
   }
+
+  .admin-section {
+    background: #fff3cd;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 3rem;
+    border: 1px solid #ffc107;
+  }
+
+  .admin-section h3 {
+    color: #856404;
+    margin-bottom: 1rem;
+  }
+
+  .reservations-list {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .reservation-item {
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+  }
+
+  .reservation-item:last-child {
+    border-bottom: none;
+  }
+
+  .reservation-item strong {
+    color: #667eea;
+  }
 </style>
 </head>
 <body>
@@ -358,6 +407,15 @@
   </div>
 
   <div class="gifts-grid" id="giftsContainer"></div>
+
+  <!-- SECCIÓN PRIVADA SOLO PARA USTEDES -->
+  <div class="admin-section">
+    <h3>🔒 Información de Reservas (Solo para ustedes)</h3>
+    <p style="margin-bottom: 1rem; color: #856404; font-size: 14px;">Aquí aparece quién ha reservado cada regalo. Esta información es privada y no la ven los demás.</p>
+    <div class="reservations-list" id="adminReservations">
+      <p style="color: #95a5a6;">Sin reservas aún</p>
+    </div>
+  </div>
 </div>
 
 <div class="container">
@@ -374,6 +432,7 @@
       <div class="form-group">
         <label>Tu nombre <span style="color: red;">*</span></label>
         <input type="text" id="reserverName" required placeholder="Ej: María García">
+        <div class="info-text">ℹ️ Tu nombre será privado y solo lo verán los dueños del registro</div>
       </div>
       <div class="form-group">
         <label>Teléfono o email (para coordinar)</label>
@@ -393,20 +452,20 @@
 
 <script>
 const initialGifts = [
-  { name: "Nido Colecho Reversible Océano", store: "Olivia y Sam", url: "https://www.oliviaysam.com/nido-colecho-reversible-oceano", icon: "🛏️" },
-  { name: "Saco de dormir Guldvaevare (Beige-Ocre)", store: "IKEA", url: "https://www.ikea.com/cl/es/p/guldvaevare-saco-de-dormir-beige-ocre-90588543/", icon: "🛌" },
-  { name: "Saco de dormir Tencel Hojas Verdes (0-2 meses)", store: "Rosen", url: "https://www.rosen.cl/babyrosen/saco-de-dormir-tencel-hojas-verdes-0-2-meses.html", icon: "🛌" },
-  { name: "Termómetro Ambiental", store: "Mamás Mateas", url: "https://mamasmateas.com/products/termometro-ambiental", icon: "🌡️" },
-  { name: "Toalla con Capucha Pack 2 Unidades (Carter's)", store: "Falabella", url: "https://www.falabella.com/falabella-cl/product/17450181/", icon: "🧴" },
-  { name: "Toalla de Bebé con Capucha (Groenfink - Amarillo)", store: "IKEA", url: "https://www.ikea.com/cl/es/p/groenfink-toalla-de-bebe-con-capucha-amarillo-70572369/", icon: "🧴" },
-  { name: "Mamadera Softouch Boca Ancha 150ml", store: "Mamás Mateas", url: "https://mamasmateas.com/products/mamadera-softouch-boca-ancha-pp", icon: "🍼" },
-  { name: "Mamadera Softouch Boca Ancha 240ml", store: "Mamás Mateas", url: "https://mamasmateas.com/products/mamadera-softouch-boca-ancha-pp", icon: "🍼" },
-  { name: "Mamadera Softouch Boca Ancha 320ml", store: "Mamás Mateas", url: "https://mamasmateas.com/products/mamadera-softouch-boca-ancha-pp", icon: "🍼" },
-  { name: "Cepillo de Limpieza de Silicona Gris", store: "Mamás Mateas", url: "https://mamasmateas.com/products/cepillo-de-limpieza-de-silicona-gris", icon: "🧹" },
-  { name: "Calentador de Mamaderas", store: "Mamás Mateas", url: "https://mamasmateas.com/products/calentador-de-mamaderas", icon: "🔥" },
-  { name: "Set de Lima Uñas Eléctrico de Bebé (Momcozy)", store: "Falabella", url: "https://www.falabella.com/falabella-cl/product/141799642/", icon: "✂️" },
-  { name: "Cepillo Peineta", store: "Mamás Mateas", url: "https://mamasmateas.com/products/cepillo-peineta", icon: "💇" },
-  { name: "Gift Card para Pañales", store: "A elegir", url: "#", icon: "🎁" }
+  { name: "Nido Colecho Reversible Océano", store: "Olivia y Sam", url: "https://www.oliviaysam.com/nido-colecho-reversible-oceano", price: "$449.990", image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=300&h=200&fit=crop" },
+  { name: "Saco de dormir Guldvaevare (Beige-Ocre)", store: "IKEA", url: "https://www.ikea.com/cl/es/p/guldvaevare-saco-de-dormir-beige-ocre-90588543/", price: "$34.990", image: "https://images.unsplash.com/photo-1519689360615-ed4edd4f0b9a?w=300&h=200&fit=crop" },
+  { name: "Saco de dormir Tencel Hojas Verdes (0-2 meses)", store: "Rosen", url: "https://www.rosen.cl/babyrosen/saco-de-dormir-tencel-hojas-verdes-0-2-meses.html", price: "$45.000", image: "https://images.unsplash.com/photo-1583232694850-d0cef1d4b334?w=300&h=200&fit=crop" },
+  { name: "Termómetro Ambiental", store: "Mamás Mateas", url: "https://mamasmateas.com/products/termometro-ambiental", price: "$12.990", image: "https://images.unsplash.com/photo-1584308666744-24d5f400f6f0?w=300&h=200&fit=crop" },
+  { name: "Toalla con Capucha Pack 2 Unidades (Carter's)", store: "Falabella", url: "https://www.falabella.com/falabella-cl/product/17450181/", price: "$29.990", image: "https://images.unsplash.com/photo-1567818735868-e71b99932e29?w=300&h=200&fit=crop" },
+  { name: "Toalla de Bebé con Capucha (Groenfink - Amarillo)", store: "IKEA", url: "https://www.ikea.com/cl/es/p/groenfink-toalla-de-bebe-con-capucha-amarillo-70572369/", price: "$19.990", image: "https://images.unsplash.com/photo-1584308666744-24d5f400f6f0?w=300&h=200&fit=crop" },
+  { name: "Mamadera Softouch Boca Ancha 150ml", store: "Mamás Mateas", url: "https://mamasmateas.com/products/mamadera-softouch-boca-ancha-pp", price: "$8.990", image: "https://images.unsplash.com/photo-1571260699306-57fee75abe84?w=300&h=200&fit=crop" },
+  { name: "Mamadera Softouch Boca Ancha 240ml", store: "Mamás Mateas", url: "https://mamasmateas.com/products/mamadera-softouch-boca-ancha-pp", price: "$10.990", image: "https://images.unsplash.com/photo-1571260699306-57fee75abe84?w=300&h=200&fit=crop" },
+  { name: "Mamadera Softouch Boca Ancha 320ml", store: "Mamás Mateas", url: "https://mamasmateas.com/products/mamadera-softouch-boca-ancha-pp", price: "$12.990", image: "https://images.unsplash.com/photo-1571260699306-57fee75abe84?w=300&h=200&fit=crop" },
+  { name: "Cepillo de Limpieza de Silicona Gris", store: "Mamás Mateas", url: "https://mamasmateas.com/products/cepillo-de-limpieza-de-silicona-gris", price: "$5.990", image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300&h=200&fit=crop" },
+  { name: "Calentador de Mamaderas", store: "Mamás Mateas", url: "https://mamasmateas.com/products/calentador-de-mamaderas", price: "$34.990", image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300&h=200&fit=crop" },
+  { name: "Set de Lima Uñas Eléctrico de Bebé (Momcozy)", store: "Falabella", url: "https://www.falabella.com/falabella-cl/product/141799642/", price: "$19.990", image: "https://images.unsplash.com/photo-1602662200854-a6c97d07b42f?w=300&h=200&fit=crop" },
+  { name: "Cepillo Peineta", store: "Mamás Mateas", url: "https://mamasmateas.com/products/cepillo-peineta", price: "$4.990", image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300&h=200&fit=crop" },
+  { name: "Gift Card para Pañales", store: "A elegir", url: "#", price: "Monto a elección", image: "https://images.unsplash.com/photo-1565303666747-611d54d60323?w=300&h=200&fit=crop" }
 ];
 
 let gifts = JSON.parse(localStorage.getItem('clemGifts')) || initialGifts.map((g, i) => ({
@@ -433,10 +492,11 @@ function renderGifts() {
     
     card.innerHTML = `
       <div class="gift-image">
-        ${gift.icon}
+        <img src="${gift.image}" alt="${gift.name}" onerror="this.style.display='none'">
       </div>
       <div class="gift-content">
         <div class="gift-name">${gift.name}</div>
+        <div class="gift-price">${gift.price}</div>
         <div class="gift-store">
           <span>📍</span> ${gift.store}
         </div>
@@ -445,12 +505,9 @@ function renderGifts() {
         </a>
         <div class="gift-status">
           ${hasReservations ? `
-            <div class="status-text">Reservado(s):</div>
-            <div class="claimed-list">
-              ${gift.reservations.map((r, i) => `<div class="claimed-item">✓ ${r.quantity > 1 ? r.quantity + 'x - ' : ''}${r.name}</div>`).join('')}
-            </div>
+            <span class="status-badge">✓ Reservado</span>
           ` : `
-            <div class="status-text">Disponible para reservar</div>
+            <span class="status-badge" style="background: #95a5a6;">Disponible</span>
           `}
         </div>
         <div class="gift-actions">
@@ -462,6 +519,7 @@ function renderGifts() {
   });
   
   updateStats();
+  updateAdminSection();
 }
 
 function openReserveModal(giftId) {
@@ -503,7 +561,7 @@ function submitReservation(event) {
     saveGifts();
     renderGifts();
     closeModal();
-    showNotification(`¡Gracias ${name}! Tu reserva fue confirmada`);
+    showNotification(`¡Reserva confirmada! Los dueños verán tu información.`);
   }
 }
 
@@ -517,6 +575,33 @@ function updateStats() {
   document.getElementById('availableCount').textContent = available;
 }
 
+function updateAdminSection() {
+  const adminDiv = document.getElementById('adminReservations');
+  let html = '';
+  
+  gifts.forEach(gift => {
+    if (gift.reservations && gift.reservations.length > 0) {
+      html += `<div class="reservation-item">
+        <strong>${gift.name}</strong><br>
+        Precio: ${gift.price}<br>`;
+      
+      gift.reservations.forEach(res => {
+        html += `👤 ${res.name}${res.contact ? ' - ' + res.contact : ''}<br>`;
+        if (res.quantity > 1) html += `📦 Cantidad: ${res.quantity}<br>`;
+        html += `📅 ${res.date}<br><br>`;
+      });
+      
+      html += `</div>`;
+    }
+  });
+  
+  if (html === '') {
+    html = '<p style="color: #95a5a6;">Sin reservas aún</p>';
+  }
+  
+  adminDiv.innerHTML = html;
+}
+
 function showNotification(message) {
   const notif = document.createElement('div');
   notif.className = 'notification';
@@ -528,7 +613,6 @@ function showNotification(message) {
   }, 3000);
 }
 
-// Cerrar modal al hacer click fuera
 document.getElementById('reserveModal').addEventListener('click', function(e) {
   if (e.target === this) {
     closeModal();
